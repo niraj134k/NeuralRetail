@@ -1,0 +1,14 @@
+# Large raw data files (not needed by app)
+data/silver_retail.csv
+data/.ipynb_checkpoints/
+online_retail_II.xlsx
+
+# Python cache
+__pycache__/
+*.py[cod]
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Optional: exclude notebooks if you don't want to show them
+# *.ipynb
