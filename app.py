@@ -485,7 +485,7 @@ with st.sidebar:
         <div style="{bg} padding:6px 10px; border-radius:0 6px 6px 0; margin-bottom:1px;">
             <span style="font-size:0.8rem; color:{'#e2e8f0' if is_active else C_MUTED}; font-weight:{'600' if is_active else '400'};">{label}</span>
         </div>""", unsafe_allow_html=True)
-        if st.button(label, key=f"nav_model_{pg}", width="stretch"):
+        if st.button(label, key=f"nav_model_{pg}", use_container_width=True):
             st.session_state["nav_model"] = pg
             st.session_state["active_level"] = "model"
             st.session_state["nav_analytics"] = None
@@ -509,7 +509,7 @@ with st.sidebar:
             <span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:{dot_color}; margin-right:8px;"></span>
             <span style="font-size:0.8rem; color:{'#e2e8f0' if is_active else C_MUTED}; font-weight:{'600' if is_active else '400'};">{page_name}</span>
         </div>""", unsafe_allow_html=True)
-        if st.button(page_name, key=f"nav_analytics_{page_name}", width="stretch"):
+        if st.button(page_name, key=f"nav_analytics_{page_name}", use_container_width=True):
             st.session_state["nav_analytics"] = page_name
             st.session_state["active_level"] = "analytics"
             st.rerun()
@@ -529,7 +529,7 @@ with st.sidebar:
             <span style="display:inline-block; width:7px; height:7px; border-radius:50%; background:{dot_color}; margin-right:8px;"></span>
             <span style="font-size:0.8rem; color:{'#e2e8f0' if is_active else C_MUTED}; font-weight:{'600' if is_active else '400'};">{page_name}</span>
         </div>""", unsafe_allow_html=True)
-        if st.button(page_name, key=f"nav_pred_{page_name}", width="stretch"):
+        if st.button(page_name, key=f"nav_pred_{page_name}", use_container_width=True):
             st.session_state["nav_prediction"] = page_name
             st.session_state["active_level"] = "prediction"
             st.rerun()
@@ -595,17 +595,17 @@ if active_level == "model":
     n1, n2, n3 = st.columns(3)
     with n1:
         st.markdown(f"""<div class="rec-card" style="border-left-color:{C_RED};">
-        <b style="color:{C_RED};"> Churn Predictor</b><br>
+        <b style="color:{C_RED};">🔮 Churn Predictor</b><br>
         Enter any customer's RFM metrics and get their live churn probability from the stacked XGBoost + LightGBM ensemble.
         </div>""", unsafe_allow_html=True)
     with n2:
         st.markdown(f"""<div class="rec-card" style="border-left-color:{C_GREEN};">
-        <b style="color:{C_GREEN};"> Segment Predictor</b><br>
+        <b style="color:{C_GREEN};">🔮 Segment Predictor</b><br>
         Input Recency, Frequency, and Monetary values to classify a new customer into Loyal or Lost using the trained K-Means model.
         </div>""", unsafe_allow_html=True)
     with n3:
         st.markdown(f"""<div class="rec-card" style="border-left-color:{C_ACCENT2};">
-        <b style="color:{C_ACCENT2};"> Demand Predictor</b><br>
+        <b style="color:{C_ACCENT2};">🔮 Demand Predictor</b><br>
         Select a SKU and enter lag features to forecast next-period quantity demand using the LightGBM model.
         </div>""", unsafe_allow_html=True)
 
@@ -621,7 +621,7 @@ elif active_level == "prediction":
     # -------------------------------------------------------------------------
     if current_pred == "Churn Predictor":
 
-        st.markdown('<div class="page-title"> Churn Predictor</div>', unsafe_allow_html=True)
+        st.markdown('<div class="page-title">🔮 Churn Predictor</div>', unsafe_allow_html=True)
         st.markdown('<div class="page-subtitle">Run the live stacked XGBoost + LightGBM churn model on a new customer</div>', unsafe_allow_html=True)
         st.markdown("---")
 
@@ -682,7 +682,7 @@ elif active_level == "prediction":
             pred_col, _, result_col = st.columns([1, 0.2, 2])
 
             with pred_col:
-                run_pred = st.button("▶  Run Churn Prediction", type="primary", width="stretch")
+                run_pred = st.button("▶  Run Churn Prediction", type="primary", use_container_width=True)
 
             if run_pred or st.session_state.get("churn_result_cache") is not None:
                 # Build feature vector in exact training order
@@ -887,7 +887,7 @@ elif active_level == "prediction":
                 avg_basket_rev       = st.number_input("Avg Basket Revenue (£)", min_value=1.0, max_value=5000.0, value=100.0, step=10.0)
 
             st.markdown("")
-            run_seg = st.button("▶  Run Segment Prediction", type="primary", width="content")
+            run_seg = st.button("▶  Run Segment Prediction", type="primary", use_container_width=False)
 
             if run_seg or st.session_state.get("segment_result_cache") is not None:
                 feat_values = {
@@ -1099,7 +1099,7 @@ elif active_level == "prediction":
                 roll_std30  = st.number_input("Rolling Std 30d",   min_value=0.0, max_value=500.0,  value=7.0,   step=0.5)
 
             st.markdown("")
-            run_fc = st.button("▶  Run Demand Prediction", type="primary", width="content")
+            run_fc = st.button("▶  Run Demand Prediction", type="primary", use_container_width=False)
 
             if run_fc or st.session_state.get("demand_result_cache") is not None:
                 feat_values = {
