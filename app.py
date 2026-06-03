@@ -792,7 +792,7 @@ elif active_level == "prediction":
                     fig_gauge.update_layout(paper_bgcolor="rgba(0,0,0,0)",
                                             font=dict(color=C_TEXT), height=300,
                                             margin=dict(l=20, r=20, t=40, b=10))
-                    st.plotly_chart(fig_gauge, width="stretch")
+                    st.plotly_chart(fig_gauge, use_container_width=True)
 
                 with g2:
                     # Model comparison bar
@@ -809,7 +809,7 @@ elif active_level == "prediction":
                     fig_bar.update_layout(coloraxis_showscale=False, yaxis_range=[0, 110],
                                           yaxis_title="Churn Probability (%)")
                     chart_layout(fig_bar, 300, "Model Comparison")
-                    st.plotly_chart(fig_bar, width="stretch")
+                    st.plotly_chart(fig_bar, use_container_width=True)
 
                 # Retention recommendations
                 st.markdown("---")
@@ -974,7 +974,7 @@ elif active_level == "prediction":
                     fig_dist.update_traces(textposition="outside")
                     fig_dist.update_layout(coloraxis_showscale=False, yaxis_title="Distance to Centroid")
                     chart_layout(fig_dist, 300, "Distance to Each Cluster Centroid")
-                    st.plotly_chart(fig_dist, width="stretch")
+                    st.plotly_chart(fig_dist, use_container_width=True)
 
                 with g2:
                     # Radar chart of customer profile
@@ -1007,7 +1007,7 @@ elif active_level == "prediction":
                         title=dict(text="Customer RFM Radar", font=dict(color=C_TEXT, size=13), x=0, xanchor="left"),
                         font=dict(color=C_MUTED, size=10),
                     )
-                    st.plotly_chart(fig_rad, width="stretch")
+                    st.plotly_chart(fig_rad, use_container_width=True)
 
                 # Segment recommendations
                 st.markdown("---")
@@ -1210,7 +1210,7 @@ elif active_level == "prediction":
                     ))
                     chart_layout(fig_fc, 320, f"Demand Forecast — {selected_sku}")
                     fig_fc.update_layout(yaxis_title="Units")
-                    st.plotly_chart(fig_fc, width="stretch")
+                    st.plotly_chart(fig_fc, use_container_width=True)
 
                 with g2:
                     # 7-day forecast table
@@ -1222,7 +1222,7 @@ elif active_level == "prediction":
                         "Safety Stk": [f"{v*1.25:.0f}" for v in forecasts],
                     })
                     st.markdown("**7-Day Horizon Forecast**")
-                    st.dataframe(fc_table, hide_index=True, width="stretch")
+                    st.dataframe(fc_table, hide_index=True, use_container_width=True)
 
                 # Inventory recommendations
                 st.markdown("---")
@@ -1313,7 +1313,7 @@ elif active_level == "analytics":
                                       line=dict(color=C_ACCENT, width=2.5), name="Revenue"))
             chart_layout(fig, 320, "Revenue Trend")
             fig.update_layout(yaxis_tickprefix="£", yaxis_tickformat=",.0f")
-            st.plotly_chart(fig, width="stretch")
+            st.plotly_chart(fig, use_container_width=True)
         with col2:
             if "Category" in df.columns:
                 cat_rev = df.groupby("Category")["Revenue"].sum().reset_index()
@@ -1321,7 +1321,7 @@ elif active_level == "analytics":
                                color_discrete_sequence=[C_ACCENT, C_ACCENT2, C_GREEN, C_ORANGE, C_PURPLE], hole=0.45)
                 fig2.update_traces(textposition="outside", textinfo="label+percent", textfont=dict(size=10, color=C_TEXT))
                 chart_layout(fig2, 320, "Revenue by Category")
-                st.plotly_chart(fig2, width="stretch")
+                st.plotly_chart(fig2, use_container_width=True)
 
         col3, col4 = st.columns(2)
         with col3:
@@ -1331,7 +1331,7 @@ elif active_level == "analytics":
                                          mode="lines", fill="tozeroy", fillcolor="rgba(6,182,212,0.15)",
                                          line=dict(color=C_ACCENT2, width=2), name="Customers"))
             chart_layout(fig3, 280, "Customer Growth")
-            st.plotly_chart(fig3, width="stretch")
+            st.plotly_chart(fig3, use_container_width=True)
         with col4:
             top_prod = df.groupby("Description")["Revenue"].sum().nlargest(8).reset_index()
             top_prod["short"] = top_prod["Description"].str[:22]
@@ -1339,7 +1339,7 @@ elif active_level == "analytics":
                            color="Revenue", color_continuous_scale=[[0, C_CARD2],[1, C_ACCENT]])
             fig4.update_layout(coloraxis_showscale=False, xaxis_tickprefix="£", xaxis_tickformat=",.0f", yaxis_tickfont_size=9)
             chart_layout(fig4, 280, "Top Products")
-            st.plotly_chart(fig4, width="stretch")
+            st.plotly_chart(fig4, use_container_width=True)
 
     # -------------------------------------------------------------------------
     # ANALYTICS PAGE: Demand Forecasting
@@ -1379,7 +1379,7 @@ elif active_level == "analytics":
             fig.add_trace(go.Scatter(x=list(future_dates)+list(future_dates[::-1]), y=list(upper)+list(lower[::-1]),
                                       fill="toself", fillcolor="rgba(16,185,129,0.12)", line=dict(color="rgba(0,0,0,0)"), name="95% CI"))
             chart_layout(fig, 340, f"Actual vs Forecast — {sku_map.get(sel_sku, sel_sku)[:30]}")
-            st.plotly_chart(fig, width="stretch")
+            st.plotly_chart(fig, use_container_width=True)
 
         col1, col2 = st.columns(2)
         with col1:
@@ -1388,7 +1388,7 @@ elif active_level == "analytics":
                 fig2 = px.histogram(x=errors, nbins=30, color_discrete_sequence=[C_ACCENT2])
                 fig2.add_vline(x=0, line_dash="dash", line_color=C_RED, annotation_text="Zero error")
                 chart_layout(fig2, 280, "Forecast Error Distribution")
-                st.plotly_chart(fig2, width="stretch")
+                st.plotly_chart(fig2, use_container_width=True)
         with col2:
             sku_perf = top_skus.head(8).copy()
             sku_perf["label"] = sku_perf["Description"].str[:20]
@@ -1396,7 +1396,7 @@ elif active_level == "analytics":
                            color="Revenue", color_continuous_scale=[[0, C_CARD2],[1, C_ORANGE]])
             fig3.update_layout(coloraxis_showscale=False, yaxis_tickfont_size=9, xaxis_tickprefix="£")
             chart_layout(fig3, 280, "Product Revenue Comparison")
-            st.plotly_chart(fig3, width="stretch")
+            st.plotly_chart(fig3, use_container_width=True)
 
         if len(actual) >= 5:
             st.markdown("**Future Demand Forecast Table**")
@@ -1406,7 +1406,7 @@ elif active_level == "analytics":
                 "Lower CI":         lower.round(0).astype(int),
                 "Upper CI":         upper.round(0).astype(int),
             })
-            st.dataframe(forecast_table, width="stretch", hide_index=True)
+            st.dataframe(forecast_table, use_container_width=True, hide_index=True)
 
     # -------------------------------------------------------------------------
     # ANALYTICS PAGE: Customer Segments
@@ -1429,7 +1429,7 @@ elif active_level == "analytics":
                               size="Monetary" if "Monetary" in sample.columns else None, size_max=14, opacity=0.7,
                               hover_data=["Customer ID"])
             chart_layout(fig, 360, "Recency vs Frequency by Segment")
-            st.plotly_chart(fig, width="stretch")
+            st.plotly_chart(fig, use_container_width=True)
         with col2:
             if has_segment:
                 seg_counts = cust["Segment"].value_counts().reset_index()
@@ -1438,7 +1438,7 @@ elif active_level == "analytics":
                                color_discrete_sequence=[C_ACCENT, C_GREEN, C_ORANGE, C_RED, C_PURPLE], hole=0.45)
                 fig2.update_traces(textposition="outside", textinfo="label+percent", textfont=dict(size=10, color=C_TEXT))
                 chart_layout(fig2, 360, "Segment Distribution")
-                st.plotly_chart(fig2, width="stretch")
+                st.plotly_chart(fig2, use_container_width=True)
 
         if has_segment:
             rfm_cols = [c for c in ["Recency","Frequency","Monetary","ProductDiversity","AvgBasketRevenue"] if c in cust.columns]
@@ -1450,7 +1450,7 @@ elif active_level == "analytics":
             fig3 = px.imshow(rfm_scaled, color_continuous_scale=[[0,"#0d1520"],[0.5,C_ACCENT],[1,C_ACCENT2]],
                               aspect="auto", text_auto=".2f")
             chart_layout(fig3, 280, "RFM Feature Heatmap by Segment")
-            st.plotly_chart(fig3, width="stretch")
+            st.plotly_chart(fig3, use_container_width=True)
 
             col3, col4 = st.columns(2)
             with col3:
@@ -1459,20 +1459,20 @@ elif active_level == "analytics":
                                color="Monetary", color_continuous_scale=[[0, C_CARD2],[1, C_GREEN]])
                 fig4.update_layout(coloraxis_showscale=False, xaxis_tickprefix="£", xaxis_tickformat=",.0f")
                 chart_layout(fig4, 280, "Avg Spend by Segment")
-                st.plotly_chart(fig4, width="stretch")
+                st.plotly_chart(fig4, use_container_width=True)
             with col4:
                 seg_freq = cust.groupby("Segment")["Frequency"].mean().reset_index()
                 fig5 = px.bar(seg_freq.sort_values("Frequency"), x="Frequency", y="Segment", orientation="h",
                                color="Frequency", color_continuous_scale=[[0, C_CARD2],[1, C_ACCENT]])
                 fig5.update_layout(coloraxis_showscale=False)
                 chart_layout(fig5, 280, "Avg Orders by Segment")
-                st.plotly_chart(fig5, width="stretch")
+                st.plotly_chart(fig5, use_container_width=True)
 
         st.markdown("**Segment Summary Table**")
         seg_table_cols = [c for c in ["Customer ID","Segment","Recency","Frequency","Monetary","RFM_Score"] if c in cust.columns]
         seg_table = cust[seg_table_cols].copy()
         if "Monetary" in seg_table.columns: seg_table["Monetary"] = seg_table["Monetary"].apply(fmt_currency)
-        st.dataframe(seg_table.head(20), width="stretch", hide_index=True)
+        st.dataframe(seg_table.head(20), use_container_width=True, hide_index=True)
 
     # -------------------------------------------------------------------------
     # ANALYTICS PAGE: Churn Risk
@@ -1505,7 +1505,7 @@ elif active_level == "analytics":
                 fig.add_vline(x=0.3, line_dash="dash", line_color=C_GREEN, annotation_text="Low/Medium")
                 fig.add_vline(x=0.6, line_dash="dash", line_color=C_RED,   annotation_text="Medium/High")
                 chart_layout(fig, 320, "Churn Probability Distribution")
-                st.plotly_chart(fig, width="stretch")
+                st.plotly_chart(fig, use_container_width=True)
         with col2:
             if has_tier:
                 risk_counts = ch["ChurnRiskTier"].value_counts().reset_index()
@@ -1514,7 +1514,7 @@ elif active_level == "analytics":
                                color="Tier", color_discrete_map={"High Risk":C_RED,"Medium Risk":C_ORANGE,"Low Risk":C_GREEN}, hole=0.45)
                 fig2.update_traces(textposition="outside", textinfo="label+percent", textfont=dict(size=10, color=C_TEXT))
                 chart_layout(fig2, 320, "Risk Distribution")
-                st.plotly_chart(fig2, width="stretch")
+                st.plotly_chart(fig2, use_container_width=True)
 
         col3, col4 = st.columns(2)
         with col3:
@@ -1527,7 +1527,7 @@ elif active_level == "analytics":
                            color="Importance", color_continuous_scale=[[0, C_CARD2],[1, C_ACCENT]])
             fig3.update_layout(coloraxis_showscale=False)
             chart_layout(fig3, 320, "Feature Importance")
-            st.plotly_chart(fig3, width="stretch")
+            st.plotly_chart(fig3, use_container_width=True)
         with col4:
             shap_features = ["Frequency -","Monetary +","AvgBasket +","OrderFreq -","ProductDiv +"]
             shap_vals = [-0.18, 0.14, 0.11, -0.09, 0.07]
@@ -1535,7 +1535,7 @@ elif active_level == "analytics":
                                      marker_color=[C_RED if v<0 else C_GREEN for v in shap_vals]))
             fig4.add_vline(x=0, line_color=C_MUTED)
             chart_layout(fig4, 320, "Feature Contributions (SHAP-style)")
-            st.plotly_chart(fig4, width="stretch")
+            st.plotly_chart(fig4, use_container_width=True)
 
         st.markdown("**High Risk Customers — Act Now**")
         if has_tier and "ChurnProbability" in ch.columns:
@@ -1546,7 +1546,7 @@ elif active_level == "analytics":
                 high_risk_table["ChurnProbability"] = (high_risk_table["ChurnProbability"]*100).round(1).astype(str)+"%"
             if "Monetary" in high_risk_table.columns:
                 high_risk_table["Monetary"] = high_risk_table["Monetary"].apply(fmt_currency)
-            st.dataframe(high_risk_table, width="stretch", hide_index=True)
+            st.dataframe(high_risk_table, use_container_width=True, hide_index=True)
 
     # -------------------------------------------------------------------------
     # ANALYTICS PAGE: Inventory Optimizer
@@ -1586,14 +1586,14 @@ elif active_level == "analytics":
                           color_discrete_map={"A":C_GREEN,"B":C_ORANGE,"C":C_RED})
             chart_layout(fig, 360, "Stock Levels — Top 20 SKUs")
             fig.update_layout(yaxis_tickfont_size=9, legend_title="ABC Class")
-            st.plotly_chart(fig, width="stretch")
+            st.plotly_chart(fig, use_container_width=True)
         with col2:
             abc_counts = prod["ABC"].value_counts().reset_index(); abc_counts.columns=["Class","Count"]
             fig2 = px.pie(abc_counts, values="Count", names="Class", hole=0.5,
                            color="Class", color_discrete_map={"A":C_GREEN,"B":C_ORANGE,"C":C_RED})
             fig2.update_traces(textposition="outside", textinfo="label+percent", textfont=dict(size=11, color=C_TEXT))
             chart_layout(fig2, 360, "ABC Classification")
-            st.plotly_chart(fig2, width="stretch")
+            st.plotly_chart(fig2, use_container_width=True)
 
         col3, col4 = st.columns(2)
         with col3:
@@ -1604,7 +1604,7 @@ elif active_level == "analytics":
                                        mode="lines+markers", line=dict(color=C_RED, width=2)))
             chart_layout(fig3, 300, "Demand vs Inventory")
             fig3.update_layout(xaxis_tickangle=-35)
-            st.plotly_chart(fig3, width="stretch")
+            st.plotly_chart(fig3, use_container_width=True)
         with col4:
             risk_data = pd.DataFrame({"Risk":["Stockout Risk","Optimal","Overstock"],
                                        "Count":[stockout_risk, total_skus-stockout_risk-dead_stock, dead_stock]})
@@ -1612,13 +1612,13 @@ elif active_level == "analytics":
                            color="Risk", color_discrete_map={"Stockout Risk":C_RED,"Optimal":C_GREEN,"Overstock":C_ORANGE})
             fig4.update_traces(textposition="outside", textinfo="label+percent", textfont=dict(size=10, color=C_TEXT))
             chart_layout(fig4, 300, "Inventory Risk Split")
-            st.plotly_chart(fig4, width="stretch")
+            st.plotly_chart(fig4, use_container_width=True)
 
         st.markdown("**Reorder Recommendations**")
         reorder_table = (prod[prod["Reorder"]][["StockCode","Description","ABC","StockLevel","DailyDemand","DaysOfStock"]]
                           .sort_values("DaysOfStock").head(25).reset_index(drop=True))
         reorder_table.columns = ["SKU","Description","ABC Class","Stock Level","Daily Demand","Days of Stock"]
-        st.dataframe(reorder_table, width="stretch", hide_index=True)
+        st.dataframe(reorder_table, use_container_width=True, hide_index=True)
 
     # -------------------------------------------------------------------------
     # ANALYTICS PAGE: Model Monitoring
@@ -1647,13 +1647,13 @@ elif active_level == "analytics":
             fig.add_trace(go.Scatter(x=monitor_dates, y=mape_vals, mode="lines", name="MAPE %", line=dict(color=C_ACCENT, width=2)))
             fig.add_hline(y=10, line_dash="dash", line_color=C_RED, annotation_text="Target threshold (10%)")
             chart_layout(fig, 300, "Forecast MAPE — 60 Day Trend")
-            st.plotly_chart(fig, width="stretch")
+            st.plotly_chart(fig, use_container_width=True)
         with col2:
             fig2 = go.Figure()
             fig2.add_trace(go.Scatter(x=monitor_dates, y=auc_vals, mode="lines", name="AUC", line=dict(color=C_GREEN, width=2)))
             fig2.add_hline(y=0.75, line_dash="dash", line_color=C_RED, annotation_text="Min acceptable (0.75)")
             chart_layout(fig2, 300, "Churn AUC — 60 Day Trend")
-            st.plotly_chart(fig2, width="stretch")
+            st.plotly_chart(fig2, use_container_width=True)
 
         col3, col4 = st.columns(2)
         with col3:
@@ -1663,7 +1663,7 @@ elif active_level == "analytics":
             fig3.add_hline(y=0.2, line_dash="dash", line_color=C_RED, annotation_text="Drift alert (0.2)")
             fig3.add_hline(y=0.1, line_dash="dot",  line_color=C_ORANGE, annotation_text="Warning (0.1)")
             chart_layout(fig3, 300, "Data Drift (PSI) — 60 Day Trend")
-            st.plotly_chart(fig3, width="stretch")
+            st.plotly_chart(fig3, use_container_width=True)
         with col4:
             fig4 = go.Figure(go.Indicator(
                 mode="gauge+number", value=92,
@@ -1675,7 +1675,7 @@ elif active_level == "analytics":
             ))
             fig4.update_layout(paper_bgcolor="rgba(0,0,0,0)", font=dict(color=C_TEXT), height=300,
                                 margin=dict(l=20,r=20,t=40,b=10))
-            st.plotly_chart(fig4, width="stretch")
+            st.plotly_chart(fig4, use_container_width=True)
 
         st.markdown("**Retraining History**")
         retrain_history = pd.DataFrame({
@@ -1688,4 +1688,4 @@ elif active_level == "analytics":
             "After AUC":  ["—","0.83","—","—","0.81"],
             "Status":     ["Deployed","Deployed","Deployed","Deployed","Deployed"],
         })
-        st.dataframe(retrain_history, width="stretch", hide_index=True)
+        st.dataframe(retrain_history, use_container_width=True, hide_index=True)
